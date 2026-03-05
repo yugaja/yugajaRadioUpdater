@@ -31,6 +31,24 @@ Supported flash steps and addresses:
 
 The app expects `esptool.exe` and firmware `.bin` files in the same folder as `yugaja_radio_update_tool.exe` (typically `bin/Release`).
 
+## Download and prepare files
+
+You must download all release files, not just a single `.bin`.
+
+Before starting the updater, make sure all of these files are in one folder:
+
+- `yugaja_radio_update_tool.exe`
+- `yugaja_radio_update_tool.exe.config`
+- `esptool.exe`
+- `bootloader.bin`
+- `partitions.bin`
+- `ota_data_initial.bin`
+- `app_wifi.bin` (or `firmware_app.bin`)
+- `app_bt.bin` (or `firmware_boot.bin`)
+- `spiffs.bin`
+
+If files are split across different folders, flashing will fail because the updater cannot find required binaries.
+
 ## Hardware note (audio pins)
 
 This device variant uses the following I2S/DAC pins:
