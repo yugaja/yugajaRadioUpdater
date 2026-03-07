@@ -91,7 +91,14 @@ This device variant uses the following I2S/DAC pins:
 
 ### esp32-2432S028R board:
 
-Refer to the device documentation for pin configuration.
+This device variant uses the following I2S/DAC pins:
+
+```c
+  #define I2S_DOUT             22
+  #define I2S_BCLK             17
+  #define I2S_LRC              27
+```
+
 
 ## Important
 
