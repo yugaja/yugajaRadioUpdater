@@ -5,7 +5,7 @@ Windows desktop utility for updating firmware on Yugaja WiFi Streamer + BT Speak
 ## What the app does
 
 - Detects available COM ports.
-- Selects board type to use correct firmware variants.
+- **Selects board type** (JC2432W328, esp32-2432S028R, or esp32-2432S028R v3) to use correct firmware variants.
 - Lets you select which firmware parts to flash.
 - Runs `esptool.exe` and writes selected `.bin` files to the correct ESP32 addresses.
 - Shows log output and progress during flashing.
@@ -14,13 +14,13 @@ Windows desktop utility for updating firmware on Yugaja WiFi Streamer + BT Speak
 ## Firmware flow (short)
 
 1. Start the tool.
-2. Select the board type.
+2. **Select the board type:** JC2432W328, esp32-2432S028R, or esp32-2432S028R v3.
 3. Select the device COM port.
 4. Select the firmware parts to flash (or keep all checked).
 5. Click `Start Flash`.
 6. Wait for status: `Flashing completed successfully`.
 
-### Supported flash steps and addresses
+### Supported flash steps and addresses:
 
 All boards use the same memory addresses:
 
@@ -31,19 +31,29 @@ All boards use the same memory addresses:
 - BT firmware -> `0x1F0000`
 - `spiffs.bin` -> `0x3D0000`
 
-### Board-specific firmware files
+### Board-specific firmware files:
 
-- `JC2432W328`: `app_wifi.bin` / `app_bt.bin` (fallbacks: `firmware_app.bin` / `firmware_boot.bin`)
-- `esp32-2432S028R`: `app_wifi_res.bin` / `app_bt_res.bin` (fallbacks: `app_wifi.bin` / `app_bt.bin`)
-- `esp32-2432S028R v3`: `app_wifi_v3.bin` / `app_bt_v3.bin` (fallbacks: `app_wifi_res_v3.bin` / `app_bt_res_v3.bin` / `app_wifi.bin` / `app_bt.bin`)
+**JC2432W328 board:**
+- `app_wifi.bin` (fallback: `firmware_app.bin`) - WiFi firmware
+- `app_bt.bin` (fallback: `firmware_boot.bin`) - BT firmware
+
+**esp32-2432S028R board:**
+- `app_wifi_res.bin` (fallback: `app_wifi.bin`) - WiFi firmware (optimized)
+- `app_bt_res.bin` (fallback: `app_bt.bin`) - BT firmware (optimized)
+
+**esp32-2432S028R v3 board:**
+- `app_wifi_v3.bin` (fallbacks: `app_wifi_res_v3.bin`, `app_wifi.bin`) - WiFi firmware (v3)
+- `app_bt_v3.bin` (fallbacks: `app_bt_res_v3.bin`, `app_bt.bin`) - BT firmware (v3)
 
 ## File location
 
-The app expects `esptool.exe` and firmware `.bin` files in the same folder as `yugaja_radio_update_tool.exe` (typically `bin/release` in this package).
+The app expects `esptool.exe` and firmware `.bin` files in the same folder as `yugaja_radio_update_tool.exe` (typically `bin/Release`).
 
 ## Download and prepare files
 
 You must download all release files, not just a single `.bin`.
+
+### For JC2432W328 board:
 
 Before starting the updater, make sure all of these files are in one folder:
 
@@ -52,13 +62,63 @@ Before starting the updater, make sure all of these files are in one folder:
 - `bootloader.bin`
 - `partitions.bin`
 - `ota_data_initial.bin`
-- board app files (according to selected board type above)
+- `app_wifi.bin` (or fallback: `firmware_app.bin`)
+- `app_bt.bin` (or fallback: `firmware_boot.bin`)
 - `spiffs.bin`
 
-If files are split across different folders, flashing will fail because the updater cannot find required binaries.
+### For esp32-2432S028R board:
+
+Before starting the updater, make sure all of these files are in one folder:
+
+- `yugaja_radio_update_tool.exe`
+- `esptool.exe`
+- `bootloader.bin`
+- `partitions.bin`
+- `ota_data_initial.bin`
+- `app_wifi_res.bin` (or fallback: `app_wifi.bin`)
+- `app_bt_res.bin` (or fallback: `app_bt.bin`)
+- `spiffs.bin`
+
+### For esp32-2432S028R v3 board:
+
+Before starting the updater, make sure all of these files are in one folder:
+
+- `yugaja_radio_update_tool.exe`
+- `esptool.exe`
+- `bootloader.bin`
+- `partitions.bin`
+- `ota_data_initial.bin`
+- `app_wifi_v3.bin` (or fallback: `app_wifi_res_v3.bin`, `app_wifi.bin`)
+- `app_bt_v3.bin` (or fallback: `app_bt_res_v3.bin`, `app_bt.bin`)
+- `spiffs.bin`
+
+**Note:** If files are split across different folders, flashing will fail because the updater cannot find required binaries.
+
+## Hardware notes
+
+### JC2432W328 board (audio pins):
+
+This device variant uses the following I2S/DAC pins:
+
+```c
+#define I2S_DOUT 17
+#define I2S_BCLK 22
+#define I2S_LRC 4
+```
+
+### esp32-2432S028R board:
+
+This device variant uses the following I2S/DAC pins:
+
+```c
+  #define I2S_DOUT             22
+  #define I2S_BCLK             17
+  #define I2S_LRC              27
+```
+
 
 ## Important
 
-- Do not disconnect USB or power during flashing.
+- **Do not disconnect USB or power during flashing.**
 - Select the correct board type before flashing to ensure correct firmware files are used.
 - The application supports fallback filenames for compatibility with legacy firmware releases.
