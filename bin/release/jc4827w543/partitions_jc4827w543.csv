@@ -1,0 +1,8 @@
+# Single-app partition layout for JC4827W543 (ESP32-S3-N4R8, 4MB flash).
+# No dual-firmware BT slot is used on this branch.
+# Name,     Type, SubType, Offset,   Size,     Flags
+nvs,        data, nvs,     0x9000,   0x6000,
+phy_init,   data, phy,     0xF000,   0x1000,
+factory,    app,  factory, 0x10000,  0x2A0000,
+spiffs,     data, spiffs,  0x2B0000, 0x140000,
+coredump,   data, coredump,0x3F0000, 0x10000,
