@@ -109,10 +109,11 @@ Current ESP32 audio pinout:
 `jc4827w543` uses the built-in I2S class-D amplifier. Default I2S pins:
 
 ```c
-// Keep default I2S triplet for quick DAC bring-up on jumper wires.
-#define I2S_DOUT 27
-#define I2S_BCLK 26
-#define I2S_LRC  25
+// CYD I2S wiring (GPIO42 LRCK, GPIO41 DOUT, GPIO42 BCLK depending on module).
+// Kept aligned with the original bring-up branch.
+#define I2S_DOUT                  41
+#define I2S_BCLK                  42
+#define I2S_LRC                   2
 ```
 
 ## Important
