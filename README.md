@@ -116,6 +116,26 @@ Current ESP32 audio pinout:
 #define I2S_LRC                   2
 ```
 
+### `jc4827w543`: runtime-selectable I2S output pin sets (WebUI)
+
+On `jc4827w543` only, firmware adds runtime selection of the I2S output pin triplet. The selection is saved into device config and applied on every boot.
+
+WebUI path:
+
+- `Settings` → `advanced` → `audio output` → `I2S output pins` → `Apply and reboot`
+
+I2S pin sets (DOUT / BCLK / LRC):
+
+- **Internal (default):** GPIO41 / GPIO42 / GPIO2
+- **Set 2:** GPIO16 / GPIO15 / GPIO7
+- **Set 3:** GPIO5 / GPIO14 / GPIO9
+
+Notes:
+
+- This feature is compiled/active only for the `jc4827w543` environment; other boards keep their existing pinout behavior.
+- Firmware explicitly resets the candidate GPIOs during boot to avoid warm-reboot GPIO-matrix leftovers, so `Apply and reboot` should be sufficient (no power-cycle required).
+- To get the WebUI selector, flash `spiffs.bin` along with the firmware (it contains the updated web assets).
+
 ## Important
 
 - Do not disconnect USB or power during flashing.
